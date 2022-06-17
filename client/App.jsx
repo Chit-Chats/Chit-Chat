@@ -1,11 +1,17 @@
 import React, { Component } from 'react';
-import { render } from 'react-dom';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+
 import LoginContainer from './containers/LoginContainer';
 
 const App = () => {
   return (
     <div>
-      <LoginContainer/>
+      <BrowserRouter>
+        <Routes>
+          <Route path ='/' element={<LoginContainer/>} />
+          {/* <Route path = '/home' element={<HomeContainer />}/> */}
+        </Routes>
+      </BrowserRouter>
     </div>
   )
 }
