@@ -2,7 +2,7 @@ import React from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form'
 import { TextField, Button } from '@mui/material';
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const LoginForm = () => {
   const { register, handleSubmit, formState: { errors }} = useForm();
@@ -11,24 +11,30 @@ const LoginForm = () => {
   //onSubmit should make post request to db
   const onSubmit = data => {
     console.log(data)
-    const {username, password} = data
-    fetch('http://localhost:3000/login', {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: {username, password},
-      method: 'POST',
-      body: JSON.stringify(data)
-    })
-    .then((response) => response.json())
-    .then((data) => {
-      setLoggedInState(true)
-    })
-    .catch((err) => {
-      console.log("login error", err);
-      alert('Wrong username/password');
-    });
+    // const {username, password} = data
+    // fetch('http://localhost:3000/login', {
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: {username, password},
+    //   method: 'POST',
+    //   body: JSON.stringify(data)
+    // })
+    // .then((response) => response.json())
+    // .then((data) => {
+    //   setLoggedInState(true)
+    // })
+    // .catch((err) => {
+    //   console.log("login error", err);
+    //   alert('Wrong username/password');
+    // });
   };
+
+  const navigate = useNavigate();
+
+  function signupForm () {
+    navigate('/signup')
+  }
 
   return loggedInState ? <Navigate to="/home" /> : (
     <div id='login-form'>
@@ -58,7 +64,19 @@ const LoginForm = () => {
         >
         Submit
         </Button>
+        <br></br>
+
+        <Button 
+          variant='text'
+          onClick={signupForm}
+        >
+          Don't have an account?
+          <br></br>
+          Signup
+        </Button>
+
       </form>
+
     </div>
   )
 }
