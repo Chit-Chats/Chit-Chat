@@ -2,23 +2,29 @@ const express = require("express");
 const app = express();
 const path = require('path');
 const PORT = 3000;
+const cors = require('cors');
 // Route Imports
 
+// require in route handlers
+const userRouter = require('./routes/userRoutes')
 
-// Parsing
+// allow cross-origin resource sharing from the client
+app.use(cors({credentials: true, origin: 'http://localhost:8080'}));
+
+// Handle parsing of incoming data
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// create a route handler for user data
+app.use("/user", userRouter);
+
 // Landing
-app.get("/", (req, res) => {
-  return res.status(200).sendFile(path.resolve(__dirname, '../index.html'))
-})
+// app.get("/", (req, res) => {
+//   return res.status(200).sendFile(path.resolve(__dirname, '../index.html'))
+// })
 
 // handle requests fro static files -> specify the root directory to serve static assets
 app.use(express.static(path.resolve(__dirname, '../client')));
-
-// create a route handler
-// app.use()
 
 // Unknown route handler
 app.use((req, res) => res.status(404).send("Error, unkown request"));
