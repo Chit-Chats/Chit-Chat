@@ -1,5 +1,7 @@
 const { Pool } = require("pg");
-
+// give access to our dotenv variables through process.env
+// this currently has our URI key to access our database
+require("dotenv").config();
 // Link to ElephantSQL DB
 const PG_URI = process.env.DB_KEY;
 
