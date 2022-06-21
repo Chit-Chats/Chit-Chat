@@ -18,12 +18,11 @@ const LoginForm = (): JSX.Element => {
     console.log(data)
     // const {username, password} = data
     // fetch('http://localhost:3000/login', {
+    //   method: 'POST',
     //   headers: {
     //     'Content-Type': 'application/json'
     //   },
     //   body: {username, password},
-    //   method: 'POST',
-    //   body: JSON.stringify(data)
     // })
     // .then((response) => response.json())
     // .then((data) => {
