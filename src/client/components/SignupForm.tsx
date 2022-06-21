@@ -1,32 +1,30 @@
 import React from 'react';
 import { useState } from 'react';
 import { useForm, FieldValues } from 'react-hook-form'
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, useThemeProps } from '@mui/material';
 import { Navigate, useNavigate } from "react-router-dom";
 
 
-const SignupForm = (): JSX.Element => {
+const SignupForm = (props: any): JSX.Element => {
   const { register, handleSubmit, formState: { errors }} = useForm();
   const navigate = useNavigate();
 
   const onSubmit = (data: FieldValues) => {
-    console.log(data)
-    const {email, username, firstName, lastName, password} = data
     fetch('http://localhost:3000/user/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({email, username, firstName, lastName, password}),
+      body: JSON.stringify(data),
     })
     .then((response) => response.json())
     .then((data) => {
-      navigate('/home')
+        navigate('/home')
     })
-    // .catch((err) => {
-    //   console.log("signup error", err);
-    //   alert('missing fields');
-    // });
+    .catch((err) => {
+      console.log("signup error", err);
+      alert('sign up error');
+    });
   };
 
   return (
