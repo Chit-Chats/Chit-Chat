@@ -1,15 +1,20 @@
 import React from 'react';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form'
+import { useForm, FieldValues } from 'react-hook-form'
 import { TextField, Button } from '@mui/material';
 import { Navigate, useNavigate } from "react-router-dom";
 
-const LoginForm = () => {
+// interface FieldValues {
+//   username: string, 
+//   password: string
+// }
+
+const LoginForm = (): JSX.Element => {
   const { register, handleSubmit, formState: { errors }} = useForm();
   const [loggedInState, setLoggedInState] = useState(false)
 
   //onSubmit should make post request to db
-  const onSubmit = data => {
+  const onSubmit = (data: FieldValues) => {
     console.log(data)
     // const {username, password} = data
     // fetch('http://localhost:3000/login', {
@@ -65,7 +70,6 @@ const LoginForm = () => {
         Submit
         </Button>
         <br></br>
-
         <Button 
           variant='text'
           onClick={signupForm}
@@ -74,9 +78,7 @@ const LoginForm = () => {
           <br></br>
           Signup
         </Button>
-
       </form>
-
     </div>
   )
 }
