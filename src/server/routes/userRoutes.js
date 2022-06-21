@@ -12,7 +12,7 @@ userRouter.get('/something', (req, res) => {
 userRouter.post('/signup', userController.createUser, (req, res) => {
   console.log('in signup router');
   // respond with a status of 200
-  res.status(200).send('postin');
+  res.status(200).json(res.locals.user);
 });
 
 // export the user router
