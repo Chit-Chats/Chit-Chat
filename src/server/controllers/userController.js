@@ -9,17 +9,29 @@ userController.createUser = async (req, res, next) => {
   // should receive from the clients post request:
   // first_name, last_name, email, and password
   // use object destructuring to store those properties in variables 
-  const {firstName, lastName, email, password} = req.body;
+  const { firstName, lastName, email, password} = req.body;
+  console.log( firstName, lastName, email, password);
   // NEED TO IMPLEMENT PASSWORD HASHING USING 256 ENCRYPTION FOR PASSWORD
   // ====================================================================
 
   // implement error handling with a try catch statement
   try {
     // create a query string to query our database
-    // use INSERT to add a new user into our users table
+        // use INSERT to add a new user into our users table
+
+    const queryString = 
+    `
+    INSERT INTO users (first_name, last_name, email, password)
+    VALUES($1, $2, $3, $4)
+    RETURNING *;
+    `
     // profile_pic and last_logged_in will be added to users table in profile settings
     
-
+    // store the query params in an array to pass into the database query
+    const params = [ firstName, lastName, email, password];
+    // query the database, passing in the query string and params and store the result in a variable
+    const result = await db.query(queryString, params);
+    console.log(result);
   }
   catch (err) {
     // invoke the next middleware function invoking the global error handler
