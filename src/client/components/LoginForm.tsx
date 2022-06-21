@@ -9,29 +9,27 @@ import { Navigate, useNavigate } from "react-router-dom";
 //   password: string
 // }
 
-const LoginForm = (): JSX.Element => {
+const LoginForm = (props: any): JSX.Element => {
   const { register, handleSubmit, formState: { errors }} = useForm();
   const [loggedInState, setLoggedInState] = useState(false)
 
   //onSubmit should make post request to db
   const onSubmit = (data: FieldValues) => {
-    console.log(data)
-    // const {username, password} = data
-    // fetch('http://localhost:3000/login', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify({username, password}),
-    // })
-    // .then((response) => response.json())
-    // .then((data) => {
-    //   setLoggedInState(true)
-    // })
-    // .catch((err) => {
-    //   console.log("login error", err);
-    //   alert('Wrong username/password');
-    // });
+    fetch('http://localhost:3000/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      props.setLoggedInState(true)
+    })
+    .catch((err) => {
+      console.log("login error", err);
+      alert('Wrong username/password');
+    });
   };
 
   const navigate = useNavigate();
@@ -40,7 +38,7 @@ const LoginForm = (): JSX.Element => {
     navigate('/signup')
   }
 
-  return loggedInState ? <Navigate to="/home" /> : (
+  return props.loggedInState ? <Navigate to="/home" /> : (
     <div id='login-form'>
       <h1>Login</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
