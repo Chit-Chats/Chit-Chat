@@ -22,7 +22,7 @@ const LoginForm = (): JSX.Element => {
     //   headers: {
     //     'Content-Type': 'application/json'
     //   },
-    //   body: {username, password},
+    //   body: JSON.stringify({username, password}),
     // })
     // .then((response) => response.json())
     // .then((data) => {
