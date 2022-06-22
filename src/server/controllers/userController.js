@@ -37,7 +37,7 @@ userController.createUser = async (req, res, next) => {
     console.log(user);
   }
   catch (err) {
-    // check if the error is do to duplicate keys violating the UNIQUE attribute
+    // check if the error is due to duplicate keys violating the UNIQUE attribute
     if (err.detail.includes('already exists.')){
       console.log(err.detail);
       // instantiate an empty object to store the names of the duplicates as properties
@@ -67,6 +67,43 @@ userController.createUser = async (req, res, next) => {
   };
 
   // invoke the next middleware function'
+  next();
+};
+
+userController.loginUser = async(req, res, next) => {
+  console.log('hi');
+  // destructure the username and password from the body of the request object
+  const { username, password } = req.body;
+
+  // handle errors with a try c atch block
+  try {
+    // create a query string to find the username that is in the table
+    const queryString = 
+    `
+    SELECT * FROM users
+    WHERE username = $1
+    `;
+    // store query params 
+    const params = [username];
+    // query the databse and store the return value in a variable
+    const user = await db.query(queryString, params);
+    console.log(user);
+    // check if the password matches and throw an error if not
+    console.log(typeof password);
+    console.log(typeof user.rows[0].password);
+    if (password.toString() !== user.rows[0].password) {
+      throw 'Incorrect Password - Please Try Again';
+    }
+    
+  }
+  catch (err) {
+    next({
+      log: `userController.createUser  ERROR: ${err}`,
+      message: { err: 'Error occured in userController.createUser'}
+    });
+  };
+
+  // invoke the next middleware function
   next();
 };
 
