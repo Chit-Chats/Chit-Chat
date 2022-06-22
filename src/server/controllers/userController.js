@@ -30,8 +30,9 @@ userController.createUser = async (req, res, next) => {
     // store the query params in an array to pass into the database query
     const params = [email, username, firstName, lastName, password];
     // query the database, passing in the query string and params and store the result in a variable
-    const result = await db.query(queryString, params);
-    console.log(result);
+    const user = await db.query(queryString, params);
+    res.locals.user = user
+    console.log(user);
   }
   catch (err) {
     // invoke the next middleware function invoking the global error handler

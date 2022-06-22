@@ -1,9 +1,10 @@
 import React from 'react';
+import SignupForm from '../components/SignupForm';
 
 const SignupContainer = (props) => {
   return(
     <div>
-      <SignupForm />
+      <SignupForm loggedInState={props.loggedInState} setLoggedInState={props.setLoggedInState}/>
     </div>
   )
 }

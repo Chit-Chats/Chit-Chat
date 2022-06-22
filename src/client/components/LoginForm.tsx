@@ -1,33 +1,35 @@
 import React from 'react';
 import { useState } from 'react';
-import { useForm } from 'react-hook-form'
+import { useForm, FieldValues } from 'react-hook-form'
 import { TextField, Button } from '@mui/material';
 import { Navigate, useNavigate } from "react-router-dom";
 
-const LoginForm = () => {
+// interface FieldValues {
+//   username: string, 
+//   password: string
+// }
+
+const LoginForm = (props: any): JSX.Element => {
   const { register, handleSubmit, formState: { errors }} = useForm();
   const [loggedInState, setLoggedInState] = useState(false)
 
   //onSubmit should make post request to db
-  const onSubmit = data => {
-    console.log(data)
-    // const {username, password} = data
-    // fetch('http://localhost:3000/login', {
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: {username, password},
-    //   method: 'POST',
-    //   body: JSON.stringify(data)
-    // })
-    // .then((response) => response.json())
-    // .then((data) => {
-    //   setLoggedInState(true)
-    // })
-    // .catch((err) => {
-    //   console.log("login error", err);
-    //   alert('Wrong username/password');
-    // });
+  const onSubmit = (data: FieldValues) => {
+    fetch('http://localhost:3000/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data),
+    })
+    .then((response) => response.json())
+    .then((data) => {
+      props.setLoggedInState(true)
+    })
+    .catch((err) => {
+      console.log("login error", err);
+      alert('Wrong username/password');
+    });
   };
 
   const navigate = useNavigate();
@@ -36,7 +38,7 @@ const LoginForm = () => {
     navigate('/signup')
   }
 
-  return loggedInState ? <Navigate to="/home" /> : (
+  return props.loggedInState ? <Navigate to="/home" /> : (
     <div id='login-form'>
       <h1>Login</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -65,7 +67,6 @@ const LoginForm = () => {
         Submit
         </Button>
         <br></br>
-
         <Button 
           variant='text'
           onClick={signupForm}
@@ -74,9 +75,7 @@ const LoginForm = () => {
           <br></br>
           Signup
         </Button>
-
       </form>
-
     </div>
   )
 }

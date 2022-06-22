@@ -4,7 +4,7 @@ import LoginForm from '../components/LoginForm';
 const LoginContainer = (props) => {
   return(
     <div>
-      <LoginForm />
+      <LoginForm loggedInState={props.loggedInState} setLoggedInState={props.setLoggedInState}/>
     </div>
   )
 }
