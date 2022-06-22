@@ -31,10 +31,34 @@ userController.createUser = async (req, res, next) => {
     const params = [email, username, firstName, lastName, password];
     // query the database, passing in the query string and params and store the result in a variable
     const user = await db.query(queryString, params);
-    res.locals.user = user
+    // send back the current user that was added to the database
+    // we do not want to send back the password
+    res.locals.user = {...user.rows[0], password: null}
     console.log(user);
   }
   catch (err) {
+    // check if the error is do to duplicate keys violating the UNIQUE attribute
+    if (err.detail.includes('already exists.')){
+      console.log(err.detail);
+      // instantiate an empty object to store the names of the duplicates as properties
+      const duplicates = {};
+      
+      // parse through the string and grab the names of the columnds
+      let start = err.detail.indexOf('(') + 1;
+      let pointer = start;
+      while (err.detail[pointer - 1] !== ')'){
+        
+        if (err.detail[pointer] === ',' || err.detail[pointer] === ')'){
+          // store the column name in a temp variable
+          const temp = err.detail.slice(start, pointer);
+          // add the column name as a property to the duplicates object 
+          duplicates[temp] = true;
+          start = pointer + 1;
+        }
+        pointer += 1;
+      }
+      console.log(duplicates);
+    }
     // invoke the next middleware function invoking the global error handler
     next({
       log: `userController.createUser  ERROR: ${err}`,
