@@ -94,6 +94,15 @@ userController.loginUser = async(req, res, next) => {
     if (password.toString() !== user.rows[0].password) {
       throw 'Incorrect Password - Please Try Again';
     }
+
+    // store all data in an object to send back to client - do not send back the password
+    const userData = {
+      ...user.rows[0],
+      password: null
+    };
+
+    // store the dataon the loclas object
+    res.locals.userData = userData;
     
   }
   catch (err) {
