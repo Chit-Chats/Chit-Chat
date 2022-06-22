@@ -16,7 +16,7 @@ userRouter.post('/signup', userController.createUser, (req, res) => {
 });
 
 userRouter.post('/login', userController.loginUser, (req, res) => {
-  res.status(200).send('login middleware successful');
+  res.status(200).json(res.locals.userData);
 });
 
 // export the user router
