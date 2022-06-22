@@ -104,9 +104,10 @@ userController.loginUser = async(req, res, next) => {
     const user = await db.query(queryString, params);
     console.log(user);
     // check if the password matches and throw an error if not
-    console.log(typeof password);
-    console.log(typeof user.rows[0].password);
-    if (password.toString() !== user.rows[0].password) {
+    console.log(user.rows[0].password);
+    console.log(password);
+    // verify the password entered matches the hashed password stored in the database
+    if (!(await argon2.verify(user.rows[0].password, password.toString()))){
       throw 'Incorrect Password - Please Try Again';
     }
 
